@@ -6,14 +6,15 @@ from flask_login import LoginManager
 from config import config 
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect 
+from flask_migrate import Migrate
 from dotenv import load_dotenv
-
 
 bootstrap = Bootstrap5()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 csrf = CSRFProtect()
+migrate = Migrate()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -24,12 +25,13 @@ def create_app(config_name):
     app.config['WTF_CSRF_ENABLED'] = True
     config[config_name].init_app(app)
     
-    bootstrap.init_app(app)
-    mail.init_app(app)
-    moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    bootstrap.init_app(app)
+    mail.init_app(app)
+    migrate.init_app(app, db)
+    moment.init_app(app)
 
     from .main import main
     app.register_blueprint(main)
