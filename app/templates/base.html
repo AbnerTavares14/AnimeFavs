@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {% block styles %}
+    {{ bootstrap.load_css() }}
+    {% endblock %}
+
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+
+<body>
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">AnimeFavs</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.get_favorite_animes') }}">Profile</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                    <div class="nav-item dropdown">
+                        <a class="btn btn-dark dropdown-toggle" type="button" id="navbarDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ current_user.gravatar(size=18) }}" alt="Profile Picture"> Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('auth.change_password') }}">Change
+                                    Password</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.change_email_request') }}">Change
+                                    Email</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    {% block content %}
+    <div class="container">
+        <div class="page-header">
+            {% block page_content %}{% endblock %}
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block scripts %}
+
+    {{ bootstrap.load_js() }}
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    <script>
+
+        function closeFlashMessage(alert) {
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => {
+                    alert.remove();
+                }, 150);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                closeFlashMessage(alert);
+            });
+        });
+    </script>
+
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+Olá {{ user.username }},
+
+Para confirmar a alteração de e-mail da sua conta, clique no link abaixo:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+Se você não foi você que fez essa solicitação, ignore este e-mail.
+
+Atenciosamente,
+Equipe AnimeFavs

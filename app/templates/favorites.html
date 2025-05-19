@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Favorite Animes{% endblock %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% block page_content %}
+<h1 class="my-4">Your Favorite Animes</h1>
+<div class="row">
+    {% for anime in favorite_animes %}
+    <div class="col-md-3 mb-2" id="{{anime.id}}">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ anime.image }}" class="img-fluid rounded-start" alt="Banner de {{ anime.title }}" id="image">
+            <div class="card-body">
+                <h5 class="card-title">{{ anime.title }}</h5>
+                <p class="card-text"><strong>Adaptation Source:</strong> {{ anime.source }}</p>
+                <p class="card-text"><strong>Number of Episodes:</strong> {{ anime.episodes }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ anime.status }}</p>
+                <p class="card-text"><strong>Rating:</strong> {{ anime.rating }}</p>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#animeModal"
+                    onclick="showAnimeDetails('{{ loop.index0 }}')">
+                    See Details
+                </button>
+                <button class="btn btn-secondary" onclick="removeToFavorite('{{ anime.id }}')">
+                    <ion-icon name="star"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info" role="alert">
+            You have no favorite animes yet.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="modal fade" id="animeModal" tabindex="-1" aria-labelledby="animeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="animeModalLabel">Anime Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 id="modalAnimeTitle" class="modal-anime-title"></h6>
+                <p id="modalAnimeSynopsis" class="modal-anime-synopsis"></p>
+                <p id="modalAnimeBackground" class="modal-anime-background"></p>
+                <p id="modalAnimeSeasons" class="modal-anime-seasons"></p>
+                <p id="modalAnimeYear" class="modal-anime-year"></p>
+                <p id="modalAnimeGenres" class="modal-anime-genres"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ bootstrap.load_js() }}
+<script>
+    const animeData =  {{ favorite_animes | tojson }};
+</script>
+<script src="{{ url_for('static', filename='animeDetails.js') }}"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+Olá {{ user.username }},
+
+Bem-vindo ao AnimeFavs! Para ativar sua conta, clique no link abaixo:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+Se você não criou uma conta no AnimeFavs, ignore este e-mail.
+
+Atenciosamente,
+Equipe AnimeFavs
