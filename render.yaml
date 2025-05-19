@@ -14,7 +14,7 @@ services:
       - key: FLASK_ENV
         value: production
       - key: PYTHON_VERSION
-        value: 3.8.1
+        value: 3.12.3
       - key: SECRET_KEY
         sync: false
       - key: MAIL_SERVER
