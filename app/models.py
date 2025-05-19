@@ -54,7 +54,7 @@ class User(UserMixin, db.Model):
     member_since = db.Column(db.DateTime(), default=datetime.datetime.now)
     last_seen = db.Column(db.DateTime(), default=datetime.datetime.now)
     avatar_hash = db.Column(db.String(32))
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(256))
     confirmed = db.Column(db.Boolean, default=False)
 
 
