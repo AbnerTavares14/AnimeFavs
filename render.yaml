@@ -38,9 +38,8 @@ services:
     autoDeploy: true
 
 databases:
-  - type: psql
-    name: animefavs-db
+  - name: animefavs-db
+    databaseName: animefavs_db
+    user: animefavs_user
     plan: free
     region: oregon
-    disk:
-      sizeGB: 1
